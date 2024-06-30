@@ -11,7 +11,7 @@ env:
 
 jobs:
   build-publish:
-    uses: halkeye/halkeye/.github/workflows/build-upstream-docker.yaml@main
+    uses: halkeye/halkeye/.github/workflows/build-upstream-docker.yaml@master
     secrets: inherit
     permissions:
       contents: write
