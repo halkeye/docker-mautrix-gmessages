@@ -43,7 +43,7 @@ jobs:
             org.opencontainers.image.url=https://github.com/mautrix/gmessages
             org.opencontainers.image.revision=v${{env.MAUTRIX_GMESSAGES_VERSION}}
           tags: |
-            type=raw,value=${{env.MAUTRIX_GMESSAGES_VERSION}}-${{ github.run_number }}
+            type=raw,value=${{env.MAUTRIX_GMESSAGES_VERSION}}.${{ github.run_number }}
             type=ref,event=branch
             type=ref,event=pr
             type=sha
@@ -55,7 +55,7 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: `refs/tags/${process.env.MAUTRIX_GMESSAGES_VERSION}-${process.env.GITHUB_RUN_NUMBER}`,
+              ref: `refs/tags/${process.env.MAUTRIX_GMESSAGES_VERSION}.${process.env.GITHUB_RUN_NUMBER}`,
               sha: context.sha
             })
 
@@ -78,6 +78,6 @@ jobs:
         with:
           make_latest: true
           generate_release_notes: true
-          tag_name: "${{env.MAUTRIX_GMESSAGES_VERSION}}-${{ github.run_number }}"
-          name: "${{env.MAUTRIX_GMESSAGES_VERSION}}-${{ github.run_number }}"
+          tag_name: "${{env.MAUTRIX_GMESSAGES_VERSION}}.${{ github.run_number }}"
+          name: "${{env.MAUTRIX_GMESSAGES_VERSION}}.${{ github.run_number }}"
 
