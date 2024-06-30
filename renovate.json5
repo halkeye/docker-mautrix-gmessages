@@ -7,7 +7,7 @@
     {
       "customType": "regex",
       "fileMatch": ["^.github/workflows/build.yml$", "^Dockerfile$"],
-      "matchStrings": ["upstream_version: v(?<currentValue>.*?)\\n", "ARG MAUTRIX_GMESSAGES_VERSION=(?<currentValue>.*?)\\n"],
+      "matchStrings": ["upstream_version: \"v(?<currentValue>.*?)\"\\n", "ARG MAUTRIX_GMESSAGES_VERSION=(?<currentValue>.*?)\\n"],
       "depNameTemplate": "mautrix/gmessages",
       "datasourceTemplate": "github-releases",
     }
