@@ -15,7 +15,7 @@ jobs:
       packages: write
     with:
       upstream_version: "v0.4.2"
-      upstream_repo: https://github.com/mautrix/gmessages
-      run_number: ${{ github.run_number }}
-      username: ${{ github.repository_owner }}
-      repository: ${{ github.repository }}
+      upstream_repo: "https://github.com/mautrix/gmessages"
+      run_number: "${{ github.run_number }}"
+      username: "${{ github.repository_owner }}"
+      repository: "${{ github.repository }}"
