@@ -17,7 +17,7 @@ jobs:
       contents: write
       packages: write
     with:
-      upstream_version: v${{env.MAUTRIX_GMESSAGES_VERSION}}
+      upstream_version: "v${{env.MAUTRIX_GMESSAGES_VERSION}}"
       upstream_repo: https://github.com/mautrix/gmessages
       run_number: ${{ github.run_number }}
       username: ${{ github.repository_owner }}
