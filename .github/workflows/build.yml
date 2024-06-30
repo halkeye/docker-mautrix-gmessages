@@ -1,4 +1,4 @@
-name: Continuous Delivery
+name: Build and Publish Docker
 
 on:
   push:
@@ -10,74 +10,15 @@ env:
   MAUTRIX_GMESSAGES_VERSION: 0.4.2
 
 jobs:
-  docker:
-    runs-on: ubuntu-latest
-
+  build-publish:
+    uses: halkeye/halkeye/.github/workflows/build-upstream-docker.yaml@main
+    secrets: inherit
     permissions:
       contents: write
       packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3
-
-      # Uses the `docker/login-action` action to log in to the Container registry registry using the account and password that will publish the packages. Once published, the packages are scoped to the account defined here.
-      - name: Log in to the Container registry
-        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # This step uses [docker/metadata-action](https://github.com/docker/metadata-action#about) to extract tags and labels that will be applied to the specified image. The `id` "meta" allows the output of this step to be referenced in a subsequent step. The `images` value provides the base name for the tags and labels.
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@f7b4ed12385588c3f9bc252f0a2b520d83b52d48
-        with:
-          images: "ghcr.io/${{ github.repository }}"
-          labels: |
-            org.opencontainers.image.source=https://github.com/mautrix/gmessages
-            org.opencontainers.image.url=https://github.com/mautrix/gmessages
-            org.opencontainers.image.revision=v${{env.MAUTRIX_GMESSAGES_VERSION}}
-          tags: |
-            type=raw,value=${{env.MAUTRIX_GMESSAGES_VERSION}}.${{ github.run_number }}
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha
-
-      - name: Create tag
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-        with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/${process.env.MAUTRIX_GMESSAGES_VERSION}.${process.env.GITHUB_RUN_NUMBER}`,
-              sha: context.sha
-            })
-
-      # This step uses the `docker/build-push-action` action to build the image, based on your repository's `Dockerfile`. If the build succeeds, it pushes the image to GitHub Packages.
-      # It uses the `context` parameter to define the build's context as the set of files located in the specified path. For more information, see "[Usage](https://github.com/docker/build-push-action#usage)" in the README of the `docker/build-push-action` repository.
-      # It uses the `tags` and `labels` parameters to tag and label the image with the output from the "meta" step.
-      - name: Build and push Docker image
-        uses: docker/build-push-action@af64c4e18f18907592d87ebdea2882bc1f27a07a
-        with:
-          context: .
-          push: true
-          build-args: |
-            MAUTRIX_GMESSAGES_VERSION=${{ env.MAUTRIX_GMESSAGES_VERSION }}
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Create release
-        uses: softprops/action-gh-release@a74c6b72af54cfa997e81df42d94703d6313a2d0 # v2
-        with:
-          make_latest: true
-          generate_release_notes: true
-          tag_name: "${{env.MAUTRIX_GMESSAGES_VERSION}}.${{ github.run_number }}"
-          name: "${{env.MAUTRIX_GMESSAGES_VERSION}}.${{ github.run_number }}"
-
+    with:
+      upstream_version: v${{env.MAUTRIX_GMESSAGES_VERSION}}
+      upstream_repo: https://github.com/mautrix/gmessages
+      run_number: ${{ github.run_number }}
+      username: ${{ github.repository_owner }}
+      repository: ${{ github.repository }}
