@@ -12,7 +12,7 @@ RUN chmod 0755 /tmp/mautrix-gmessages
 # just test the download
 RUN /tmp/mautrix-gmessages --help
 
-FROM debian:12.6-slim AS runtime
+FROM debian:12.7-slim AS runtime
 RUN apt-get update && apt-get install -y \
   ca-certificates=20230311 \
   gettext-base=0.21-12 \
