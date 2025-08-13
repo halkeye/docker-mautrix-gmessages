@@ -12,11 +12,21 @@ RUN chmod 0755 /tmp/mautrix-gmessages
 # just test the download
 RUN /tmp/mautrix-gmessages --help
 
-FROM debian:13.0-slim AS runtime
+FROM debian:trixie-slim AS runtime
+# renovate: suite=trixie depName=ca-certificates
+ENV CA_CERTIFICATES_VERSION="20250419"
+# renovate: suite=trixie depName=libasprintf0v5
+ENV LIBASPRINTF_VERSION="0.23.1-2"
+# renovate: suite=trixie depName=gettext-base
+ENV GETTEXT_BASE_VERSION="0.23.1-2"
+
 RUN apt-get update && apt-get install -y \
-  ca-certificates=20230311 \
-  gettext-base=0.21-12 \
+  ca-certificates="${CA_CERTIFICATES_VERSION}" \
+  libasprintf0v5=${LIBASPRINTF_VERSION} \
+  gettext-base=${GETTEXT_BASE_VERSION} \
   && rm -rf /var/lib/apt/lists/*
+COPY --from=mwader/static-ffmpeg:7.1.1 /ffmpeg /usr/local/bin/
+COPY --from=mwader/static-ffmpeg:7.1.1 /ffprobe /usr/local/bin/
 COPY --from=builder /tmp/mautrix-gmessages /usr/bin/mautrix-gmessages
 USER 1337
 ENTRYPOINT ["/usr/bin/mautrix-gmessages"]
