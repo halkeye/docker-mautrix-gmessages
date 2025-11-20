@@ -25,8 +25,8 @@ RUN apt-get update && apt-get install -y \
   libasprintf0v5=${LIBASPRINTF_VERSION} \
   gettext-base=${GETTEXT_BASE_VERSION} \
   && rm -rf /var/lib/apt/lists/*
-COPY --from=mwader/static-ffmpeg:7.1.1 /ffmpeg /usr/local/bin/
-COPY --from=mwader/static-ffmpeg:7.1.1 /ffprobe /usr/local/bin/
+COPY --from=mwader/static-ffmpeg:8.0.1 /ffmpeg /usr/local/bin/
+COPY --from=mwader/static-ffmpeg:8.0.1 /ffprobe /usr/local/bin/
 COPY --from=builder /tmp/mautrix-gmessages /usr/bin/mautrix-gmessages
 USER 1337
 ENTRYPOINT ["/usr/bin/mautrix-gmessages"]
