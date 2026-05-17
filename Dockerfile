@@ -1,6 +1,6 @@
 FROM curlimages/curl:8.20.0 AS builder
 ARG TARGETPLATFORM
-ARG UPSTREAM_VERSION=v0.2604.0
+ARG UPSTREAM_VERSION=v0.2605.0
 RUN DOCKER_ARCH=$(case ${TARGETPLATFORM:-linux/amd64} in \
   "linux/amd64")   echo "amd64"  ;; \
   "linux/arm/v7")  echo "arm64"   ;; \
