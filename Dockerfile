@@ -1,4 +1,4 @@
-FROM curlimages/curl:8.22.0 AS builder
+FROM curlimages/curl:8.23.0 AS builder
 ARG TARGETPLATFORM
 ARG UPSTREAM_VERSION=v0.2609.0
 RUN DOCKER_ARCH=$(case ${TARGETPLATFORM:-linux/amd64} in \
