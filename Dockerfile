@@ -14,7 +14,7 @@ RUN /tmp/mautrix-gmessages --help
 
 FROM debian:trixie-slim AS runtime
 # renovate: suite=trixie depName=ca-certificates
-ENV CA_CERTIFICATES_VERSION="20250419"
+ENV CA_CERTIFICATES_VERSION="20250419+deb13u1"
 # renovate: suite=trixie depName=libasprintf0v5
 ENV LIBASPRINTF_VERSION="0.23.1-2"
 # renovate: suite=trixie depName=gettext-base
